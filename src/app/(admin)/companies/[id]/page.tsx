@@ -6,11 +6,10 @@ import getQueryClient from '@/lib/utils/getQueryClient';
 import CompanyInfo from '@/app/components/company-info';
 import CompanyPromotions from '@/app/components/company-promotions';
 
-export interface PageProps {
-  params: { id: string };
-}
-
-export default async function Page({ params }: PageProps) {
+export default async function Page(context: {
+  params: Promise<{ id: string }>;
+}) {
+  const params = await context.params; // Ожидание params здесь
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
