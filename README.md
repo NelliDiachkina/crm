@@ -6,8 +6,9 @@ This project provides a functional interface for managing companies. It includes
 This project is built with the following technologies:
 - **Next.js** 
 - **Tailwind CSS**
-- **Mockapi.io** 
 - **clsx**
+- **Mockapi.io** 
+
 
 ![1](https://github.com/user-attachments/assets/37b670cb-1ce6-4ce3-ba88-d723dd77fbc5)
 ![2](https://github.com/user-attachments/assets/14f10573-d4eb-4edb-9281-8b9e73fd63ff)
