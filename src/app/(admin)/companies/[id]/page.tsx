@@ -6,32 +6,27 @@ import getQueryClient from '@/lib/utils/getQueryClient';
 import CompanyInfo from '@/app/components/company-info';
 import CompanyPromotions from '@/app/components/company-promotions';
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const resolvedParams = await params;
+export interface PageProps {
+  params: { id: string };
+}
 
+export default async function Page({ params }: PageProps) {
   const queryClient = getQueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ['companies', resolvedParams.id],
-    queryFn: () => getCompany(resolvedParams.id, { cache: 'no-store' }),
+    queryKey: ['companies', params.id],
+    queryFn: () => getCompany(params.id, { cache: 'no-store' }),
     staleTime: 10 * 1000,
   });
 
   await queryClient.prefetchQuery({
-    queryKey: ['promotions', resolvedParams.id],
+    queryKey: ['promotions', params.id],
     queryFn: () =>
-      getPromotions({ companyId: resolvedParams.id }, { cache: 'no-store' }),
+      getPromotions({ companyId: params.id }, { cache: 'no-store' }),
     staleTime: 10 * 1000,
   });
 
-  const company = queryClient.getQueryData([
-    'companies',
-    resolvedParams.id,
-  ]) as Company;
+  const company = queryClient.getQueryData(['companies', params.id]) as Company;
   if (!company) {
     notFound();
   }
@@ -42,10 +37,10 @@ export default async function Page({
     <HydrationBoundary state={dehydratedState}>
       <div className="py-6 px-10 grid grid-cols-12 gap-5">
         <div className="col-span-3">
-          <CompanyInfo companyId={resolvedParams.id} />
+          <CompanyInfo companyId={params.id} />
         </div>
         <div className="col-span-9">
-          <CompanyPromotions companyId={resolvedParams.id} />
+          <CompanyPromotions companyId={params.id} />
         </div>
       </div>
     </HydrationBoundary>

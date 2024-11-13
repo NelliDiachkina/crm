@@ -1,16 +1,16 @@
+'use client';
+
 import React from 'react';
 import PromotionForm from '@/app/components/promotion-form';
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
-  const resolvedParams = await params;
+export interface PageProps {
+  params: { id: string };
+}
 
+export default function Page({ params }: PageProps) {
   return (
     <div className="py-6 px-10">
-      <PromotionForm companyId={resolvedParams.id} />
+      <PromotionForm companyId={params.id} />
     </div>
   );
 }
