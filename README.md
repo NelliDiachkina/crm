@@ -1,3 +1,7 @@
+# CRM App
+
+This project provides a functional interface for managing companies. It includes a dynamic homepage that can be adapted for various needs, as well as **Dashboard** and **Companies** pages, which offer a detailed overview of company information.
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
