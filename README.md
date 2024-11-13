@@ -2,6 +2,11 @@
 
 This project provides a functional interface for managing companies. It includes a dynamic homepage that can be adapted for various needs, as well as **Dashboard** and **Companies** pages, which offer a detailed overview of company information.
 
+
+![1](https://github.com/user-attachments/assets/37b670cb-1ce6-4ce3-ba88-d723dd77fbc5)
+![2](https://github.com/user-attachments/assets/14f10573-d4eb-4edb-9281-8b9e73fd63ff)
+![3](https://github.com/user-attachments/assets/54ab5eca-0bef-4a13-bd92-e66885cebe79)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
