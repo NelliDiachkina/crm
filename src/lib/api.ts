@@ -62,35 +62,10 @@ const buildUrl = (...paths: string[]) =>
 const stringifyQueryParams = (params: Record<string, string>) =>
   new URLSearchParams(params).toString();
 
-const validateItems = <T>(items: T[], requiredKeys: (keyof T)[]): T[] => {
-  return items.filter((item) => {
-    return requiredKeys.every(
-      (key) => item[key] != null && typeof item[key] === 'string',
-    );
-  });
-};
-
-const sendRequest = async <T>(url: string, init?: RequestInit): Promise<T> => {
-  const controller = new AbortController();
-  const signal = controller.signal;
-
-  const res = await fetch(url, {
-    ...init,
-    signal,
-  }).catch((error) => {
-    if (error.name === 'AbortError') {
-      console.error('Request was aborted');
-    } else {
-      throw error;
-    }
-  });
-
-  if (res && res.status === 404) {
-    return [] as T;
-  }
-
-  if (!res || !res.ok) {
-    throw new Error((await res?.text()) || 'Request failed');
+const sendRequest = async <T>(url: string, init?: RequestInit) => {
+  const res = await fetch(url, init);
+  if (!res.ok) {
+    throw new Error(await res.text());
   }
 
   return (await res.json()) as T;
@@ -104,45 +79,19 @@ export const getSummarySales = (init?: RequestInit) => {
   return sendRequest<SummarySales[]>(buildUrl('summary-sales'), init);
 };
 
-export const getCountries = async (init?: RequestInit) => {
-  try {
-    const countries = await sendRequest<Country[]>(buildUrl('countries'), init);
-    return validateItems(countries, ['id', 'title']);
-  } catch (error) {
-    console.error('Error fetching countries:', error);
-    return [];
-  }
+export const getCountries = (init?: RequestInit) => {
+  return sendRequest<Country[]>(buildUrl('countries'), init);
 };
 
-export const getCategories = async (init?: RequestInit) => {
-  try {
-    const categories = await sendRequest<Category[]>(
-      buildUrl('categories'),
-      init,
-    );
-    return validateItems(categories, ['id', 'title']);
-  } catch (error) {
-    console.error('Error fetching categories:', error);
-    return [];
-  }
+export const getCategories = (init?: RequestInit) => {
+  return sendRequest<Category[]>(buildUrl('categories'), init);
 };
 
-export const getCompanies = async (init?: RequestInit) => {
-  try {
-    const companies = await sendRequest<Company[]>(buildUrl('companies'), init);
-    return validateItems(companies, [
-      'id',
-      'title',
-      'categoryId',
-      'categoryTitle',
-    ]);
-  } catch (error) {
-    console.error('Error fetching companies:', error);
-    return [];
-  }
+export const getCompanies = (init?: RequestInit) => {
+  return sendRequest<Company[]>(buildUrl('companies'), init);
 };
 
-export const getCompany = async (id: string, init?: RequestInit) => {
+export const getCompany = (id: string, init?: RequestInit) => {
   return sendRequest<Company>(buildUrl('companies', id), init);
 };
 
@@ -150,16 +99,10 @@ export const getPromotions = async (
   params: Record<string, string> = {},
   init?: RequestInit,
 ) => {
-  try {
-    const promotions = await sendRequest<Promotion[]>(
-      `${buildUrl('promotions')}?${stringifyQueryParams(params)}`,
-      init,
-    );
-    return validateItems(promotions, ['id', 'title', 'companyId']);
-  } catch (error) {
-    console.error('Error fetching promotions:', error);
-    return [];
-  }
+  return sendRequest<Promotion[]>(
+    `${buildUrl('promotions')}?${stringifyQueryParams(params)}`,
+    init,
+  );
 };
 
 export const createCompany = async (
